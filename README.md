@@ -24,6 +24,15 @@ Create a `.env` file in the root directory and add your API keys:
 OPENAI_API_KEY=your_api_key_here
 ```
 
+### 3. Data Ingestion
+Before running the application, you need to process the documents:
+
+```bash
+python ingestion.py
+```
+
+This will create a `.chroma` directory containing the document embeddings. Note that this directory might be large depending on your document collection.
+
 ## Running the Application
 
 Launch the Streamlit application:
