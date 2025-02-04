@@ -16,14 +16,29 @@ if st.button("Search"):
     st.write(result["question"])
     
     st.header("Answer")
-    st.write(result["generation"])
-    
-    st.header("Reference Documents")
-    for i, doc in enumerate(result["documents"], 1):
-        st.subheader(f"Document {i}")
-        with st.expander(f"Document {i} Details"):
-            st.write(f"**Source:** {doc.metadata['source']}")
-            st.write(f"**Page:** {doc.metadata['page']}")
-            content = doc.page_content[:300].replace("\n", " ")
-            st.write(f"**Content:** {content}...")
-            st.divider()
+
+    generation = result.get("generation")
+    documents = result.get("documents", [])
+
+    if not generation:
+        st.write("No answer generated.")
+    else:
+        st.write(generation)
+        
+        if documents:
+            st.header("Reference Documents")
+            for i, doc in enumerate(documents, 1):
+                st.subheader(f"Document {i}")
+                with st.expander(f"Document {i} Details"):
+                    st.write(f"**Source:** {doc.metadata['source']}")
+                    st.write(f"**Page:** {doc.metadata['page']}")
+                    content = ' '.join(
+                        filter(
+                            None, 
+                            [line.strip() for line in doc.page_content.split('\n')]
+                        )
+                    )
+                    content = ' '.join(content.split())
+                    st.write(f"**Content:** {content}")
+                    st.divider()
+   
